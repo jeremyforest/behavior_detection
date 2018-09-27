@@ -31,6 +31,9 @@ if StrictVersion(tf.__version__) < StrictVersion('1.9.0'):
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
+import cv2
+
+
 ## The model to use
 MODEL_NAME = 'mice_inference_graph'
 
@@ -65,14 +68,13 @@ def load_image_into_numpy_array(image):
       (im_height, im_width, 3)).astype(np.uint8)
 
 
-PATH_TO_TEST_IMAGES_DIR = '/media/jeremy/Data/CloudStation/BehaviorDetection/models/research/object_detection/mice_extracted_images'
-TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, os.listdir(PATH_TO_TEST_IMAGES_DIR)[i]) for i in range(0,10) ]
+PATH_TO_TEST_VIDEO_DIR = '/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data'
+TEST_VIDEO_PATHS = [os.path.join(PATH_TO_TEST_VIDEO_DIR, os.listdir(PATH_TO_TEST_VIDEO_DIR)[i]) for i in range(0,10) ]
 
+cap = cv2.VideoCapture('/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data/2015-10-10_14h06m41,898137s_V=1.avi')
 
 
 def run_inference_for_single_image(image, graph):
-  with graph.as_default():
-    with tf.Session() as sess:
       # Get handles to input and output tensors
       ops = tf.get_default_graph().get_operations()
       all_tensor_names = {output.name for op in ops for output in op.outputs}
@@ -114,30 +116,40 @@ def run_inference_for_single_image(image, graph):
       output_dict['detection_scores'] = output_dict['detection_scores'][0]
       if 'detection_masks' in output_dict:
         output_dict['detection_masks'] = output_dict['detection_masks'][0]
-  return output_dict
+      return output_dict
 
 
 
-for image_path in TEST_IMAGE_PATHS:
-     image = Image.open(image_path)
-     # the array based representation of the image will be used later in order to prepare the
-     # result image with boxes and labels on it.
-     image_np = load_image_into_numpy_array(image)
-     # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
-     image_np_expanded = np.expand_dims(image_np, axis=0)
-     # Actual detection.
-     output_dict = run_inference_for_single_image(image_np, detection_graph)
-     # Visualization of the results of a detection.
-     vis_util.visualize_boxes_and_labels_on_image_array(
-          image_np,
-          output_dict['detection_boxes'],
-          output_dict['detection_classes'],
-          output_dict['detection_scores'],
-          category_index,
-          instance_masks=output_dict.get('detection_masks'),
-          use_normalized_coordinates=True,
-          line_thickness=8)
-     # plt.figure(figsize=IMAGE_SIZE)
-     plt.figure(figsize=(10,10))
-     plt.imshow(image_np)
-     plt.show()      ## if want to see the images
+# for image_path in TEST_VIDEO_PATHS:
+#      image = Image.open(image_path)
+#      # the array based representation of the image will be used later in order to prepare the
+#      # result image with boxes and labels on it.
+#      image_np = load_image_into_numpy_array(image)
+with detection_graph.as_default():
+    with tf.Session() as sess:
+        while True:
+             ret, image_np = cap.read()
+
+             # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
+             image_np_expanded = np.expand_dims(image_np, axis=0)
+             # Actual detection.
+             output_dict = run_inference_for_single_image(image_np, detection_graph)
+             # Visualization of the results of a detection.
+             vis_util.visualize_boxes_and_labels_on_image_array(
+                  image_np,
+                  output_dict['detection_boxes'],
+                  output_dict['detection_classes'],
+                  output_dict['detection_scores'],
+                  category_index,
+                  instance_masks=output_dict.get('detection_masks'),
+                  use_normalized_coordinates=True,
+                  line_thickness=8)
+             # # plt.figure(figsize=IMAGE_SIZE)
+             # plt.figure(figsize=(10,10))
+             # plt.imshow(image_np)
+             # #plt.show()      ## if want to see the images
+
+             cv2.imshow('object detection', cv2.resize(image_np, (640,480)))
+             if cv2.waitKey(25) & 0xFF == ord('q'):
+                 cv2.destroyAllWindows()
+                 break

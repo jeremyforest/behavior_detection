@@ -3,4 +3,3 @@ mice_video_data/
 models/
 data_mice_from
 ssd_mobilenet_v2_coco_2018_03_29.tar.gz
-mice_detection_video.py
