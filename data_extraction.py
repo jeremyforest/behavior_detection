@@ -1,8 +1,8 @@
 import cv2
 import os
 
-data_path = '/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data'
-image_path = '/media/jeremy/Data/CloudStation/BehaviorDetection/mice_extracted_images'
+data_path = '/media/jeremy/Data/CloudStation/BehaviorDetection/temp'
+image_path = '/media/jeremy/Data/CloudStation/BehaviorDetection/temp'
 
 def video_to_images(name):
     os.chdir(data_path)

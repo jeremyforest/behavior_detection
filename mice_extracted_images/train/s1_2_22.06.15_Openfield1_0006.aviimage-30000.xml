@@ -1,0 +1,26 @@
+<annotation>
+	<folder>temp</folder>
+	<filename>s1_2_22.06.15_Openfield1_0006.aviimage-30000.jpg</filename>
+	<path>/media/jeremy/Data/CloudStation/BehaviorDetection/temp/s1_2_22.06.15_Openfield1_0006.aviimage-30000.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>768</width>
+		<height>576</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>mice</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>209</xmin>
+			<ymin>132</ymin>
+			<xmax>359</xmax>
+			<ymax>286</ymax>
+		</bndbox>
+	</object>
+</annotation>

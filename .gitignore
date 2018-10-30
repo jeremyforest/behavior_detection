@@ -1,5 +1,12 @@
+behavior_detection_inference_graph/
+csv_data/
 labelImg/
+mice_internet_images/
 mice_video_data/
+mice_video_data_test/
 models/
+models_history/
+papier/
+ssd_mobilenet_v2_coco_2018_03_29/
 data_mice_from
-ssd_mobilenet_v2_coco_2018_03_29.tar.gz
+essai_image_croping.py

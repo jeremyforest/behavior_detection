@@ -1,0 +1,21 @@
+Once the necessary steps have been followed once, if you want to add data for the training:
+
+
+1. Labeling images with labelimg. It it used to generate the .xml files that represent the contour of the wanted object to detect. Copy folder mice_extracted_images to /models/object_detection.
+
+2. To generate the tfrecord files. To do so first we convert the xml files to csv using the xml_to_csv script. Run tfrecords for train and for test images from inside models/research. If needed adjust the number of classes to detect (for now just 1, the mice).
+Example: python generate_tfrecord.py --csv_input=/media/jeremy/Data/CloudStation/BehaviorDetection/csv_data/test_labels.csv --image_dir=/media/jeremy/Data/CloudStation/BehaviorDetection/mice_extracted_images/test/ --output_path=/media/jeremy/Data/CloudStation/BehaviorDetection/csv_data/test.record.
+Copy the folder csv_data to models/research/object_detection/legacy for later use
+
+3. run train.py from inside models/research/object_detection/legacy by riunning 
+python train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v2_coco.config
+
+3bis. Watch training with tensorboard using: tensorboard --logdir='/media/jeremy/Data/CloudStation/BehaviorDetection/models/research/object_detection/legacy/training/'
+
+4. run export_inference_graph.py from whithin models/research/object_detection with :	
+python export_inference_graph.py --input_type image_tensor --pipeline_config_path /media/jeremy/Data/CloudStation/BehaviorDetection/models/research/object_detection/legacy/training/ssd_mobilenet_v2_coco.config --trained_checkpoint_prefix /media/jeremy/Data/CloudStation/BehaviorDetection/models/research/object_detection/legacy/training/model.ckpt-2451 --output_directory /media/jeremy/Data/CloudStation/BehaviorDetection/csv_data/behavior_detection_inference_graph
+
+5. make the changes if needed in the mice_detection_video.py script (like model name ...). Copy the mice_detection_video.py script into the models/research/object_detection directory and run it from there.
+
+
+if needed somewhere add the path : export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim

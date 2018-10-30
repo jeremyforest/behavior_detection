@@ -2,7 +2,7 @@
 
 ### In order for the script to run successfully (probleme with python path otehrwise I think) --> to run copy in '/models/research/object_detection' directory
 
-### think about adding from tensorflow/models/research/
+### think about adding the following command from tensorflow/models/research/
 ### export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
 
 from distutils.version import StrictVersion
@@ -27,13 +27,10 @@ from object_detection.utils import ops as utils_ops
 if StrictVersion(tf.__version__) < StrictVersion('1.9.0'):
   raise ImportError('Please upgrade your TensorFlow installation to v1.9.* or later!')
 
-
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
 import cv2
-from imutils.video import FPS
-
 
 ## The model to use
 MODEL_NAME = 'mice_inference_graph'
@@ -69,10 +66,11 @@ def load_image_into_numpy_array(image):
       (im_height, im_width, 3)).astype(np.uint8)
 
 
-PATH_TO_TEST_VIDEO_DIR = '/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data'
-TEST_VIDEO_PATHS = [os.path.join(PATH_TO_TEST_VIDEO_DIR, os.listdir(PATH_TO_TEST_VIDEO_DIR)[i]) for i in range(0,10) ]
+PATH_TO_TEST_VIDEO_DIR = '/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data_test'
+TEST_VIDEO_PATHS = [os.path.join(PATH_TO_TEST_VIDEO_DIR, os.listdir(PATH_TO_TEST_VIDEO_DIR)[i]) for i in range(0, len(os.listdir(PATH_TO_TEST_VIDEO_DIR))) ]
 
-cap = cv2.VideoCapture('/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data/2015-10-10_14h06m41,898137s_V=1.avi')
+
+cap = cv2.VideoCapture('/media/jeremy/Data/CloudStation/BehaviorDetection/mice_video_data_test/2015-10-12_14h27m25,377243s_V=1.avi')
 
 def run_inference_for_single_image(image, graph):
       # Get handles to input and output tensors
@@ -118,6 +116,8 @@ def run_inference_for_single_image(image, graph):
         output_dict['detection_masks'] = output_dict['detection_masks'][0]
       return output_dict
 
+
+### Need to update code to process video in batches instead of one at a time
 with detection_graph.as_default():
     with tf.Session() as sess:
         while True:
@@ -135,9 +135,15 @@ with detection_graph.as_default():
                   category_index,
                   instance_masks=output_dict.get('detection_masks'),
                   use_normalized_coordinates=True,
-                  line_thickness=4)
+                  line_thickness=2)
+
+                """ymin = int((boxes[0][0][0]*height))
+                xmin = int((boxes[0][0][1]*width))
+                ymax = int((boxes[0][0][2]*height))
+                xmax = int((boxes[0][0][3]*width))
+                Result = np.array(img_np[ymin:ymax,xmin:xmax])"""
+
              cv2.imshow('object detection', cv2.resize(image_np, (640,480)))
-             fps = FPS().start()
              if cv2.waitKey(25) & 0xFF == ord('q'):
                  cv2.destroyAllWindows()
                  break

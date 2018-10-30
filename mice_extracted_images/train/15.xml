@@ -1,0 +1,26 @@
+<annotation>
+	<folder>mice_internet_images</folder>
+	<filename>15.jpeg</filename>
+	<path>/media/jeremy/Data/CloudStation/BehaviorDetection/mice_internet_images/15.jpeg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>321</width>
+		<height>157</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>mice</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>30</xmin>
+			<ymin>16</ymin>
+			<xmax>311</xmax>
+			<ymax>139</ymax>
+		</bndbox>
+	</object>
+</annotation>

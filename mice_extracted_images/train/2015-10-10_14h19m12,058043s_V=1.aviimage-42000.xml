@@ -1,7 +1,7 @@
 <annotation>
-	<folder>mice_extracted_images</folder>
+	<folder>train</folder>
 	<filename>2015-10-10_14h19m12,058043s_V=1.aviimage-42000.jpg</filename>
-	<path>/media/jeremy/Data/CloudStation/BehaviorDetection/mice_extracted_images/2015-10-10_14h19m12,058043s_V=1.aviimage-42000.jpg</path>
+	<path>/media/jeremy/Data/CloudStation/BehaviorDetection/mice_extracted_images/train/2015-10-10_14h19m12,058043s_V=1.aviimage-42000.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,8 +17,8 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>133</xmin>
-			<ymin>209</ymin>
+			<xmin>136</xmin>
+			<ymin>224</ymin>
 			<xmax>359</xmax>
 			<ymax>333</ymax>
 		</bndbox>
